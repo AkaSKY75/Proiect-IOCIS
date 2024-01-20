@@ -27,7 +27,6 @@ public class Movements : MonoBehaviour
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
-            //transform.position += new Vector3(Mathf.Cos(transform.rotation.eulerAngles.y) * Mathf.Sin(transform.rotation.eulerAngles.y), 0f, 1f) * speed * Time.deltaTime;
             transform.position += new Vector3(Mathf.Sin(this.angleInRadians), 0f, Mathf.Cos(this.angleInRadians)) * speed * Time.deltaTime;
         }
 
