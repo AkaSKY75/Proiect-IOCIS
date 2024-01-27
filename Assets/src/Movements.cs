@@ -9,6 +9,8 @@ public class Movements : MonoBehaviour
 {
     public float speed = 5f;
     public float jumpAmount = 10;
+
+    public Camera camera3PS, cameraFPS;
     private bool isGrounded = true;
     private Vector3 mousePosition;
     private float angleInRadians;
@@ -16,7 +18,6 @@ public class Movements : MonoBehaviour
     private void Update()
     {
         this.angleInRadians = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
-        // this.angleInRadians = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             transform.position += new Vector3(Mathf.Cos(this.angleInRadians), 0f, -Mathf.Sin(this.angleInRadians)) * speed * Time.deltaTime;
@@ -46,6 +47,8 @@ public class Movements : MonoBehaviour
         }
 
         transform.Rotate(new Vector3(0f, Input.mousePosition.x - this.mousePosition.x, 0f));
+        this.cameraFPS.transform.Rotate(new Vector3(Input.mousePosition.y - this.mousePosition.y, 0f, 0f));
+        this.camera3PS.transform.Rotate(new Vector3(Input.mousePosition.y - this.mousePosition.y, 0f, 0f));
         this.mousePosition = Input.mousePosition;
 
     }
