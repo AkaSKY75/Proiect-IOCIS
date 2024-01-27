@@ -45,10 +45,14 @@ public class Movements : MonoBehaviour
             GetComponent<Rigidbody>().AddForce(0, jumpAmount, 0, ForceMode.Impulse);
 
         }
-
+        if (this.camera3PS.transform.rotation.eulerAngles.x - (Input.mousePosition.y - this.mousePosition.y) > 90) {
+            this.camera3PS.transform.Rotate(new Vector3(90f, 0f, 0f));
+        } else if (this.camera3PS.transform.rotation.eulerAngles.x - (Input.mousePosition.y - this.mousePosition.y) < -90) {
+            this.camera3PS.transform.Rotate(new Vector3(-90f, 0f, 0f));
+        } else {
+            this.camera3PS.transform.Rotate(new Vector3(Input.mousePosition.y - this.mousePosition.y, 0f, 0f));
+        }
         transform.Rotate(new Vector3(0f, Input.mousePosition.x - this.mousePosition.x, 0f));
-        this.cameraFPS.transform.Rotate(new Vector3(Input.mousePosition.y - this.mousePosition.y, 0f, 0f));
-        this.camera3PS.transform.Rotate(new Vector3(Input.mousePosition.y - this.mousePosition.y, 0f, 0f));
         this.mousePosition = Input.mousePosition;
 
     }
