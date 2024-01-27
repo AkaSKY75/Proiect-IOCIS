@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Pipes;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class Movements : MonoBehaviour
@@ -10,7 +12,7 @@ public class Movements : MonoBehaviour
     private bool isGrounded = true;
     private Vector3 mousePosition;
     private float angleInRadians;
-
+  
     private void Update()
     {
         this.angleInRadians = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
@@ -23,6 +25,7 @@ public class Movements : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             transform.position -= new Vector3(Mathf.Cos(this.angleInRadians), 0f, -Mathf.Sin(this.angleInRadians)) * speed * Time.deltaTime;
+
         }
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
@@ -35,9 +38,11 @@ public class Movements : MonoBehaviour
             transform.position -= new Vector3(Mathf.Sin(this.angleInRadians), 0f, Mathf.Cos(this.angleInRadians)) * speed * Time.deltaTime;
         }
 
+
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
         {
             GetComponent<Rigidbody>().AddForce(0, jumpAmount, 0, ForceMode.Impulse);
+
         }
 
         transform.Rotate(new Vector3(0f, Input.mousePosition.x - this.mousePosition.x, 0f));
