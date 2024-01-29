@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:51999cbcf593b506fd3923669bf8c700804e8180ab34ea72fd7c9fd3b1a669de
-size 345
+{
+    "name": "Unity.PlayerPrefsEditor.EditorResources",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:208d4d34506e53c7691e341406265c2b5a0aaf9ffb5ab72c4ac01381007cfe17
-size 253
+newmtl box1
+illum 4
+Kd 1.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl jerrycan1
+illum 4
+Kd 1.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl shelf1
+illum 4
+Kd 1.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
