@@ -9,8 +9,6 @@ public class Movements : MonoBehaviour
 {
     public float speed = 5f;
     public float jumpAmount = 10;
-
-    public Camera camera3PS, cameraFPS;
     private bool isGrounded = true;
     private Vector3 mousePosition;
     private float angleInRadians;
@@ -45,13 +43,16 @@ public class Movements : MonoBehaviour
             GetComponent<Rigidbody>().AddForce(0, jumpAmount, 0, ForceMode.Impulse);
 
         }
-        if (this.camera3PS.transform.rotation.eulerAngles.x - (Input.mousePosition.y - this.mousePosition.y) > 90) {
-            this.camera3PS.transform.Rotate(new Vector3(90f, 0f, 0f));
-        } else if (this.camera3PS.transform.rotation.eulerAngles.x - (Input.mousePosition.y - this.mousePosition.y) < -90) {
-            this.camera3PS.transform.Rotate(new Vector3(-90f, 0f, 0f));
-        } else {
-            this.camera3PS.transform.Rotate(new Vector3(Input.mousePosition.y - this.mousePosition.y, 0f, 0f));
+
+        if (Input.GetKeyDown(KeyCode.H)) {
+            GetComponent<HelpPanelControl>().toggleHelpPanel();
         }
+
+        if (Input.GetKeyDown(KeyCode.V)) {
+            GetComponent<ToggleCamera>().toggleCamera();
+        }
+        
+        transform.GetComponent<ToggleCamera>().rotateCamera(Input.mousePosition.y - this.mousePosition.y);
         transform.Rotate(new Vector3(0f, Input.mousePosition.x - this.mousePosition.x, 0f));
         this.mousePosition = Input.mousePosition;
 
