@@ -51,11 +51,10 @@ public class Movements : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.V)) {
             GetComponent<ToggleCamera>().toggleCamera();
         }
-        
-        transform.GetComponent<ToggleCamera>().rotateCamera(Input.mousePosition.y - this.mousePosition.y);
+
+        GetComponent<ToggleCamera>().rotateCamera((Input.mousePosition.y - this.mousePosition.y)/2);
         transform.Rotate(new Vector3(0f, Input.mousePosition.x - this.mousePosition.x, 0f));
         this.mousePosition = Input.mousePosition;
-
     }
 
     private void OnTriggerStay(Collider other)
