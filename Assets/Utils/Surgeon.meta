@@ -1,12 +1,3 @@
-fileFormatVersion: 2
-<<<<<<< HEAD
-guid: 48b2b7e85013d3b45820876544fe2b35
-=======
-guid: 0209d2a4f5adb954196af18883a291e5
->>>>>>> 14d3eea (UI Menu Step1)
-folderAsset: yes
-DefaultImporter:
-  externalObjects: {}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+version https://git-lfs.github.com/spec/v1
+oid sha256:aa06a82d7787a8bf6810ecb8cb96fb7725dc7d2b6c7fb4e5921892c1a1d12510
+size 276
