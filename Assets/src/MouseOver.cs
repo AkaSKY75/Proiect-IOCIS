@@ -1,24 +1,65 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseOver : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private Dictionary<GameObject, Color> startcolor = new Dictionary<GameObject, Color>();
+    private Dictionary<GameObject, Color> startColors = new Dictionary<GameObject, Color>();
     public List<GameObject> bodyParts;
-    void OnMouseEnter()
+    private bool isMouseOver = false;
+    public Transform handTransform; // Transform-ul pentru atașarea obiectului
+
+    void Update()
     {
-        foreach(var bodyPart in bodyParts) {
-            Color color = bodyPart.GetComponent<Renderer>().material.color;
-            startcolor[bodyPart] = color;
-            bodyPart.GetComponent<Renderer>().material.color = Color.yellow;
+        // Verificăm dacă mouse-ul este peste obiect și tasta E este apăsată
+        if (isMouseOver && Input.GetKeyDown(KeyCode.E))
+        {
+            foreach (var bodyPart in bodyParts)
+            {
+                PickupObject(bodyPart);
+            }
         }
     }
+
+    void OnMouseEnter()
+    {
+        isMouseOver = true;
+        HighlightObjects(true);
+    }
+
     void OnMouseExit()
     {
-        foreach(var item in startcolor) {
-            item.Key.GetComponent<Renderer>().material.color = item.Value;
+        isMouseOver = false;
+        HighlightObjects(false);
+    }
+
+    void HighlightObjects(bool highlight)
+    {
+        foreach (var bodyPart in bodyParts)
+        {
+            var renderer = bodyPart.GetComponent<Renderer>();
+            if (highlight)
+            {
+                if (renderer != null)
+                {
+                    Color color = renderer.material.color;
+                    startColors[bodyPart] = color;
+                    renderer.material.color = Color.yellow;
+                }
+            }
+            else
+            {
+                if (startColors.TryGetValue(bodyPart, out Color originalColor) && renderer != null)
+                {
+                    renderer.material.color = originalColor;
+                }
+            }
         }
+    }
+
+    void PickupObject(GameObject pickObject)
+    {
+        pickObject.transform.SetParent(handTransform);
+        pickObject.transform.localPosition = Vector3.zero;
+        // Opțional: Dezactivează fizica obiectului
     }
 }
