@@ -8,12 +8,10 @@ public class OnPlayerInProximity : MonoBehaviour
 {
     public GameObject player;
     public Camera cam, playerCam;
-    private GameObject playerCamDuplicated;
     public Transform notepad;
     public GameObject nextButton;
     public int speed = 5;
     public int rotationSpeed = 25;
-    private bool shouldCollide;
     private Transform targetTransform;
 
     private enum CameraMovingStates:byte {
@@ -26,7 +24,6 @@ public class OnPlayerInProximity : MonoBehaviour
 
     void Start() {
         playerCameraState = CameraMovingStates.NO;
-        shouldCollide = true;
     }
 
     void Update() {
@@ -43,53 +40,29 @@ public class OnPlayerInProximity : MonoBehaviour
 
             if (playerCam.transform.position == targetTransform.position) {
                 if (playerCam.transform.rotation == targetTransform.rotation) {
-                    if (shouldCollide == true) {
-                        Cursor.visible = true;
-                        nextButton.SetActive(true);
-                        playerCameraState = CameraMovingStates.FINISHED;
-                    } else {
-                        player.GetComponent<Movements>().EnableMovements();
-                        Destroy(playerCamDuplicated);
-                    }
+                    Cursor.visible = true;
+                    nextButton.SetActive(true);
+                    playerCameraState = CameraMovingStates.FINISHED;
                 } else {
                     playerCameraState = CameraMovingStates.ROTATING;
                 }
             }
         } else if(playerCameraState == CameraMovingStates.ROTATING) {
-            Debug.Log(playerCam.transform.rotation + " " + targetTransform.rotation);
             if (playerCam.transform.rotation != targetTransform.rotation) {
                 Quaternion rotation = Quaternion.LookRotation(targetTransform.forward, targetTransform.up);
                 playerCam.transform.rotation = Quaternion.RotateTowards(playerCam.transform.rotation, rotation, rotationSpeed * Time.deltaTime);
             } else {
-                if (shouldCollide == true) {
-                    Cursor.visible = true;
-                    nextButton.SetActive(true);
-                } else {
-                    player.GetComponent<Movements>().EnableMovements();
-                    Destroy(playerCamDuplicated);
-                }
+                Cursor.visible = true;
+                nextButton.SetActive(true);
                 playerCameraState = CameraMovingStates.FINISHED;
             }
         }
     }
 
-    public void ResetPlayerCamera() {
-        targetTransform = playerCamDuplicated.transform;
-        playerCameraState = CameraMovingStates.MOVING;
-        shouldCollide = false;
-        Destroy(transform.GetComponent<BoxCollider>());
-    }
-
     void OnTriggerStay(Collider collider)
     {
-        if (collider.gameObject == player && shouldCollide == true && playerCameraState == CameraMovingStates.NO) {
-            playerCamDuplicated = new GameObject("CameraDuplicated");
-            playerCamDuplicated.SetActive(false);
-            playerCamDuplicated.transform.parent = player.transform;
-            playerCamDuplicated.AddComponent<Camera>();
-            playerCamDuplicated.GetComponent<Camera>().CopyFrom(playerCam);
-            playerCamDuplicated.transform.parent = player.transform;
-            Debug.Log(playerCam.transform.rotation + " " + playerCamDuplicated.transform.rotation);
+        Destroy(transform.GetComponent<BoxCollider>());
+        if (collider.gameObject == player && playerCameraState == CameraMovingStates.NO) {
             targetTransform = cam.transform;
 
             player.GetComponent<HelpPanelControl>().HideHelpPanel();
