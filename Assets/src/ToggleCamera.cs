@@ -18,9 +18,10 @@ public class ToggleCamera : MonoBehaviour
         FPS,
         LAST
     }
-    CurrentCamera currentCamera;
+    private CurrentCamera currentCamera;
     private void Start() {
         currentCamera = CurrentCamera._3PS;
+        Cursor.visible = false;
     }
 
     public void toggleCamera() {
