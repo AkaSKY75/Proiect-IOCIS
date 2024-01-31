@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ToggleCamera : MonoBehaviour
+public class ToggleCameraClass : MonoBehaviour
 {
     public Camera cam;
  
@@ -24,13 +24,13 @@ public class ToggleCamera : MonoBehaviour
         Cursor.visible = false;
     }
 
-    public void toggleCamera() {
+    public void ToggleCamera() {
         currentCamera = (CurrentCamera)((byte)((byte)((byte)currentCamera + 1) % (byte) CurrentCamera.LAST));
         cam.transform.localPosition = cameraPos[(byte)currentCamera];
         
     }
 
-    public void rotateCamera(float mouseDifY)
+    public void RotateCamera(float mouseDifY)
     {
         // Actualizează rotația pe axa Y și o limitează
         yRotation -= mouseDifY;

@@ -47,14 +47,14 @@ public class Movements : MonoBehaviour
             }
 
             if (Input.GetKeyDown(KeyCode.H)) {
-                GetComponent<HelpPanelControl>().toggleHelpPanel();
+                GetComponent<HelpPanelControl>().ToggleHelpPanel();
             }
 
             if (Input.GetKeyDown(KeyCode.V)) {
-                GetComponent<ToggleCamera>().toggleCamera();
+                GetComponent<ToggleCameraClass>().ToggleCamera();
             }
 
-            GetComponent<ToggleCamera>().rotateCamera((Input.mousePosition.y - this.mousePosition.y)/2);
+            GetComponent<ToggleCameraClass>().RotateCamera((Input.mousePosition.y - this.mousePosition.y)/2);
             transform.Rotate(new Vector3(0f, Input.mousePosition.x - this.mousePosition.x, 0f));
             this.mousePosition = Input.mousePosition;
         }

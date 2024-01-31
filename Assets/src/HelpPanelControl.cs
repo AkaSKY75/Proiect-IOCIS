@@ -14,20 +14,20 @@ public class HelpPanelControl : MonoBehaviour
     private void Start() {
         isShown = true;
         action = new Action[2] {
-            hideHelpPanel,
-            showHelpPanel
+            HideHelpPanel,
+            ShowHelpPanel
         };
     }
 
-    public void toggleHelpPanel() {
+    public void ToggleHelpPanel() {
         isShown = !isShown;
         action[Convert.ToInt32(isShown)]();
     }
 
-    private void hideHelpPanel() {
+    public void HideHelpPanel() {
         panel.SetActive(false);
     }
-    private void showHelpPanel() {
+    public void ShowHelpPanel() {
         panel.SetActive(true);
     }
 }

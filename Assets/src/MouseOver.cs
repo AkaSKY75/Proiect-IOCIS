@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MouseOver : MonoBehaviour
 {
     private Dictionary<Material, Color> startColor = new Dictionary<Material, Color>();
     private Material[] materials;
+    public UnityEvent unityEvent;
     private bool isMouseOver = false;
     public Transform handTransform; // Transform-ul pentru atașarea obiectului
 
@@ -54,5 +57,9 @@ public class MouseOver : MonoBehaviour
         transform.SetParent(handTransform);
         transform.localPosition = Vector3.zero;
         // Opțional: Dezactivează fizica obiectului
+    }
+
+    void OnMouseDown() {
+        unityEvent.Invoke();
     }
 }
