@@ -3,63 +3,56 @@ using UnityEngine;
 
 public class MouseOver : MonoBehaviour
 {
-    private Dictionary<GameObject, Color> startColors = new Dictionary<GameObject, Color>();
-    public List<GameObject> bodyParts;
+    private Dictionary<Material, Color> startColor = new Dictionary<Material, Color>();
+    private Material[] materials;
     private bool isMouseOver = false;
     public Transform handTransform; // Transform-ul pentru atașarea obiectului
+
+    void Start() {
+        materials = transform.GetComponent<Renderer>().materials;
+    }
 
     void Update()
     {
         // Verificăm dacă mouse-ul este peste obiect și tasta E este apăsată
         if (isMouseOver && Input.GetKeyDown(KeyCode.E))
         {
-            foreach (var bodyPart in bodyParts)
-            {
-                PickupObject(bodyPart);
-            }
+            PickupObject();
         }
     }
 
     void OnMouseEnter()
     {
-        isMouseOver = true;
-        HighlightObjects(true);
+        HighlightObject(true);
     }
 
     void OnMouseExit()
     {
-        isMouseOver = false;
-        HighlightObjects(false);
+        HighlightObject(false);
     }
 
-    void HighlightObjects(bool highlight)
+    void HighlightObject(bool highlight)
     {
-        foreach (var bodyPart in bodyParts)
+        if (highlight)
         {
-            var renderer = bodyPart.GetComponent<Renderer>();
-            if (highlight)
-            {
-                if (renderer != null)
-                {
-                    Color color = renderer.material.color;
-                    startColors[bodyPart] = color;
-                    renderer.material.color = Color.yellow;
-                }
+            foreach(var material in materials) {
+                Color color = material.color;
+                startColor[material] = color;
+                material.color = Color.yellow;
             }
-            else
-            {
-                if (startColors.TryGetValue(bodyPart, out Color originalColor) && renderer != null)
-                {
-                    renderer.material.color = originalColor;
-                }
+        }
+        else
+        {
+            foreach(var material in materials) {
+                material.color = startColor[material];
             }
         }
     }
 
-    void PickupObject(GameObject pickObject)
+    void PickupObject()
     {
-        pickObject.transform.SetParent(handTransform);
-        pickObject.transform.localPosition = Vector3.zero;
+        transform.SetParent(handTransform);
+        transform.localPosition = Vector3.zero;
         // Opțional: Dezactivează fizica obiectului
     }
 }
