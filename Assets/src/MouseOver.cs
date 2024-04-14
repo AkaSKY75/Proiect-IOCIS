@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 public class MouseOver : MonoBehaviour
 {
+    [SerializeField] private UnityEvent nextTargetEvent;
     private Dictionary<Material, Color> startColor = new Dictionary<Material, Color>();
     private Material[] materials;
-    public UnityEvent unityEvent;
     private bool isMouseOver = false;
     public Transform handTransform; // Transform-ul pentru atașarea obiectului
 
@@ -22,6 +22,7 @@ public class MouseOver : MonoBehaviour
         {
             PickupObject();
         }
+        enabled = false;
     }
 
     void OnMouseEnter()
@@ -60,6 +61,10 @@ public class MouseOver : MonoBehaviour
     }
 
     void OnMouseDown() {
-        unityEvent.Invoke();
+        if (nextTargetEvent == null) {
+            throw new Exception("nextTargetEvent was not set!");
+        }
+        nextTargetEvent.Invoke();
+        enabled = false;
     }
 }

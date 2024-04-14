@@ -25,9 +25,11 @@ public class HelpPanelControl : MonoBehaviour
     }
 
     public void HideHelpPanel() {
+        isShown = false;
         panel.SetActive(false);
     }
     public void ShowHelpPanel() {
+        isShown = true;
         panel.SetActive(true);
     }
 }
