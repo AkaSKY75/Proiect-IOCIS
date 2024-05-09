@@ -74,12 +74,15 @@ public class OnCameraRetarget : MonoBehaviour
     void Update()
     {
         if (playerCameraState == CameraMovingStates.MOVING) {
+            Debug.LogWarning("Position: " + playerCam.transform.position + ";" + nextTargetCam.transform.position);
             Quaternion targetRotation = Quaternion.LookRotation(nextTargetCam.transform.forward, nextTargetCam.transform.up);
             playerCam.transform.rotation = Quaternion.RotateTowards(playerCam.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             
             playerCam.transform.position = Vector3.MoveTowards(playerCam.transform.position, nextTargetCam.transform.position, speed * Time.deltaTime);
 
-            if (playerCam.transform.position == nextTargetCam.transform.position) {
+            if (Math.Abs(Math.Abs(playerCam.transform.position.x) - Math.Abs(nextTargetCam.transform.position.x)) < threshold &&
+                    Math.Abs(Math.Abs(playerCam.transform.position.y) - Math.Abs(nextTargetCam.transform.position.y)) < threshold &&
+                    Math.Abs(Math.Abs(playerCam.transform.position.z) - Math.Abs(nextTargetCam.transform.position.z)) < threshold) {
                 if (Math.Abs(Math.Abs(playerCam.transform.rotation.eulerAngles.x) - Math.Abs(nextTargetCam.transform.rotation.eulerAngles.x)) < threshold &&
                     Math.Abs(Math.Abs(playerCam.transform.rotation.eulerAngles.y) - Math.Abs(nextTargetCam.transform.rotation.eulerAngles.y)) < threshold &&
                     Math.Abs(Math.Abs(playerCam.transform.rotation.eulerAngles.z) - Math.Abs(nextTargetCam.transform.rotation.eulerAngles.z)) < threshold) {
