@@ -8,6 +8,7 @@ using System;
 using UnityEditor.SearchService;
 using System.Data;
 using UnityEngine.Diagnostics;
+using System.Text;
 namespace DLLWrappers {
 
 public class Pair<T, U> {
@@ -127,7 +128,7 @@ public class OpenCV : DLLWrapper {
        char[] errorLogPathCharArray = errorLogPath.ToCharArray();
        char[] modelsPathCharArray = modelsPath.ToCharArray();
        unsafe {
-            fixed (char* errorLogPathPtr = &errorLogPathCharArray[0], modelsPathPtr = &modelsPathCharArray[0]) {
+            fixed (byte* errorLogPathPtr = &Encoding.GetEncoding("UTF-8").GetBytes(errorLogPathCharArray)[0], modelsPathPtr = &Encoding.GetEncoding("UTF-8").GetBytes(modelsPathCharArray)[0]) {
                 ret = ((DetectGestureD)delegates[detectGestureFN].First)(shouldRunImageProcPtr, frameWasChangedPtr, (IntPtr)errorLogPathPtr, (IntPtr)modelsPathPtr, pixels);
             }
        }

@@ -23,7 +23,13 @@ public class AnimationState : MonoBehaviour
         if (animator != null)
         {
             bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
-            animator.SetBool("isMoving", isMoving);
+            if (isMoving) {
+                animator.enabled = true;
+                animator.SetTrigger("isMoving");
+            } else {
+                animator.ResetTrigger("isMoving");
+                animator.enabled = false;
+            }
         }
     }
 }
