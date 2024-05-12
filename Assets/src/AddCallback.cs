@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class IAddCallback : MonoScript
+public class IAddCallback : MonoBehaviour
 {
     public virtual FinishCallback AddCallback(object[] args) {
         if (args.Length == 0) {
@@ -25,12 +25,12 @@ public class IAddCallback : MonoScript
 
 public class AddCallback : MonoBehaviour
 {
-    public MonoScript script;
+    public GameObject script;
     public List<GameObject> gameObjects = new List<GameObject>();
 
     public FinishCallback ReturnCallback() {
         enabled = false;
-        Type derivedClass = script.GetClass(); 
+        Type derivedClass = script.GetType();
         MethodInfo method = derivedClass.GetMethod("AddCallback");
         if (method == null) {
             throw new Exception(derivedClass.Name + " doesn't implement `AddCallback method!`");

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEditor;
 using System.Runtime.InteropServices;
 using System;
-using UnityEditor.SearchService;
 using System.Data;
 using UnityEngine.Diagnostics;
 using System.Text;
@@ -24,7 +23,7 @@ public class Pair<T, U> {
     public U Second { get; set; }
 };
 
-public class DLLWrapper : MonoScript
+public class DLLWrapper : MonoBehaviour
 {
     protected IntPtr hModule;
     protected string libPath;
