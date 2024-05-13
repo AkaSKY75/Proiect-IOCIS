@@ -102,7 +102,7 @@ public class OpenCV : DLLWrapper {
         return singleton;
     }
     public void LoadLibraries() {
-        libPath = opencvWrapperLibPath + "opencv_wrapper.dll";
+        libPath = opencvWrapperLibPath + "\\" + "opencv_wrapper.dll";
         
         var res = AddDllDirectory(openvinoWrapperLibPath);
         if (res == 0) {
