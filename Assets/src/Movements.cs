@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO.Pipes;
 using System.Security.Cryptography;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Movements : MonoBehaviour
+public class Movements : NetworkBehaviour
 {
     public float speed = 5f;
     private bool movementsEnabled = true;
@@ -16,6 +17,10 @@ public class Movements : MonoBehaviour
   
     private void Update()
     {
+        if (!IsOwner) {
+            return;
+        }
+
         if (movementsEnabled == true) {
             this.angleInRadians = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
