@@ -12,7 +12,7 @@ public class RemoveDuplicateCamera: IAddCallback
     public override FinishCallback AddCallback(object[] args) {
         base.AddCallback(args);
         GameObject gameObject = args[0] as GameObject;
-        if (args.Length != 1 || gameObject.name != "Player") {
+        if (args.Length != 1 || !gameObject.name.Contains("Player")) {
             throw new Exception ("Invalid list of objects given!");
         }
         return delegate {
@@ -23,6 +23,7 @@ public class RemoveDuplicateCamera: IAddCallback
             }
             Destroy(duplicateCamera.gameObject);
             originalCamera.gameObject.SetActive(true);
+            gameObject.transform.GetComponent<Movements>().EnableMovements();
         };
     }
 }

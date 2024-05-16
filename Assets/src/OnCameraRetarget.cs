@@ -74,7 +74,7 @@ public class OnCameraRetarget : MonoBehaviour
     void Update()
     {
         if (playerCameraState == CameraMovingStates.MOVING) {
-            Debug.LogWarning("Position: " + playerCam.transform.position + ";" + nextTargetCam.transform.position);
+            // Debug.LogWarning("Position: " + playerCam.transform.position + ";" + nextTargetCam.transform.position);
             Quaternion targetRotation = Quaternion.LookRotation(nextTargetCam.transform.forward, nextTargetCam.transform.up);
             playerCam.transform.rotation = Quaternion.RotateTowards(playerCam.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             

@@ -23,7 +23,7 @@ public class Pair<T, U> {
     public U Second { get; set; }
 };
 
-public class DLLWrapper : MonoBehaviour
+public class DLLWrapper
 {
     protected IntPtr hModule;
     protected string libPath;

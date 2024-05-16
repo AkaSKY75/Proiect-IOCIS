@@ -11,7 +11,7 @@ public class OnPlayerInProximity : MonoBehaviour
     void OnTriggerStay(Collider collider)
     {
         Transform playerTransform = collider.transform;
-        if (playerTransform.name == "Player") {
+        if (playerTransform.name.Contains("Player")) {
             Destroy(transform.GetComponent<BoxCollider>());
             playerTransform.GetComponent<HelpPanelControl>().HideHelpPanel();
             playerTransform.GetComponent<Movements>().DisableMovements();

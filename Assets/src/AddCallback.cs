@@ -25,22 +25,27 @@ public class IAddCallback : MonoBehaviour
 
 public class AddCallback : MonoBehaviour
 {
-    public GameObject script;
-    public List<GameObject> gameObjects = new List<GameObject>();
+    [SerializeField]
+    private List<MonoBehaviour> scripts;
+    [SerializeField]
+    private List<GameObject> gameObjects;
 
     public FinishCallback ReturnCallback() {
         enabled = false;
-        Type derivedClass = script.GetType();
-        MethodInfo method = derivedClass.GetMethod("AddCallback");
-        if (method == null) {
-            throw new Exception(derivedClass.Name + " doesn't implement `AddCallback method!`");
+        FinishCallback delegates = null;
+        foreach (var script in scripts) {
+            Type derivedClass = script.GetType();
+            MethodInfo method = derivedClass.GetMethod("AddCallback");
+            if (method == null) {
+                throw new Exception(derivedClass.Name + " doesn't implement `AddCallback method!`");
+            }
+            object[] args = new object[] {gameObjects.ToArray()};
+            FinishCallback result = method.Invoke(script, args) as FinishCallback;
+            if(result == null) {
+                throw new Exception("Method invocation returned null!");
+            }
+            delegates += result;
         }
-        object obj = Activator.CreateInstance(derivedClass);
-        object[] args = new object[] {gameObjects.ToArray()};
-        FinishCallback result = method.Invoke(obj, args) as FinishCallback;
-        if(result == null) {
-            throw new Exception("Method invocation returned null!");
-        }
-        return method.Invoke(obj, args) as FinishCallback;
+        return delegates;
     }
 }

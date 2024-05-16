@@ -8,9 +8,11 @@ using UnityEngine;
 
 public class Movements : NetworkBehaviour
 {
-    public float speed = 5f;
+    [SerializeField]
+    private float speed = 5f;
+    [SerializeField]
+    private float jumpAmount = 10;
     private bool movementsEnabled = true;
-    public float jumpAmount = 10;
     private bool isGrounded = true;
     private Vector3 mousePosition;
     private float angleInRadians;
