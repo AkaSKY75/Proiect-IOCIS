@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "cppvsdbg",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "C:/Disertatie/Proiect-IOCIS/Assets/Utils/Wrappers/Speech-to-Text/build/tts_demo.exe",
+            "cwd": "C:/Disertatie/Proiect-IOCIS/Assets/Utils/Wrappers/Speech-to-Text/",
+            "miDebuggerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/cl.exe",
+            "stopAtEntry": true,
+            "environment": [{
+                "name": "PATH",
+                "value": "${env:Path};C:/Users/crist/Downloads/w_openvino_toolkit_windows_2022.3.0.9052.9752fafe8eb_x86_64/w_openvino_toolkit_windows_2022.3.0.9052.9752fafe8eb_x86_64/runtime/3rdparty/tbb/bin;C:/Users/crist/Downloads/w_openvino_toolkit_windows_2022.3.0.9052.9752fafe8eb_x86_64/w_openvino_toolkit_windows_2022.3.0.9052.9752fafe8eb_x86_64/runtime/bin/intel64/Debug;C:/Users/crist/Downloads/libsndfile-1.2.2-win64/libsndfile-1.2.2-win64/bin;C:/Users/crist/Downloads/vcruntime140_1d"
+            }]
+        }
+    ]
+}

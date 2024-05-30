@@ -135,4 +135,53 @@ public class OpenCV : DLLWrapper {
     }
 }
 
+public class Speech : DLLWrapper {
+    private delegate int RunPythonScriptD(IntPtr errorPath);
+    const string runPythonScriptFN = "RunPythonScript";
+    private readonly string speechWrapperLibPath = Application.dataPath + "\\ThirdParty\\speech";
+    private readonly string pythonWrapperLibPath = Application.dataPath + "\\ThirdParty\\python";
+    private readonly string errorLogPath = Application.dataPath;
+    private static Speech singleton;
+    public static Speech GetInstance()
+    {
+        if (singleton == null)
+        {
+                singleton = new Speech();
+        }
+        return singleton;
+    }
+    public void LoadLibraries() {
+        libPath = speechWrapperLibPath + "\\" + "speech_wrapper.dll";
+        
+        var res = AddDllDirectory(pythonWrapperLibPath);
+        if (res == 0) {
+            throw new Exception("Couldn't add DLL directory openvino! Error is: " + Marshal.GetLastWin32Error());
+        }
+        delegates = new Dictionary<string, Pair<Delegate, Type>> {
+            {runPythonScriptFN, new Pair<Delegate, Type>(null, typeof(RunPythonScriptD))}
+        };
+        LoadLibraryFlags flags = LoadLibraryFlags.LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LoadLibraryFlags.LOAD_LIBRARY_SEARCH_DEFAULT_DIRS;
+        hModule = LoadLibraryEx(libPath, IntPtr.Zero, flags);
+        foreach(var loadFunction in delegates) { 
+            loadFunction.Value.First = LoadFunction(hModule, loadFunction.Value.Second, loadFunction.Key);
+        }
+    }
+
+    public int RunPythonScript() {
+       if (hModule == IntPtr.Zero) {
+            LoadLibraries();
+            return -2;
+       }
+       
+       int ret = -1;
+       char[] errorLogPathCharArray = errorLogPath.ToCharArray();
+       unsafe {
+            fixed (byte* errorLogPathPtr = &Encoding.GetEncoding("UTF-8").GetBytes(errorLogPathCharArray)[0]) {
+                ret = ((RunPythonScriptD)delegates[runPythonScriptFN].First)((IntPtr)errorLogPathPtr);
+            }
+       }
+       return ret;
+    }
+}
+
 }  // namespace DLLWrappers
