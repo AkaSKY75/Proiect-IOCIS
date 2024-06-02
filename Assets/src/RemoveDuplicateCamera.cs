@@ -10,20 +10,15 @@ using UnityEngine.UI;
 public class RemoveDuplicateCamera: IAddCallback
 {
     public override FinishCallback AddCallback(object[] args) {
-        base.AddCallback(args);
-        GameObject gameObject = args[0] as GameObject;
-        if (args.Length != 1 || !gameObject.name.Contains("Player")) {
-            throw new Exception ("Invalid list of objects given!");
-        }
         return delegate {
-            Transform duplicateCamera = gameObject.transform.Find("Camera(Clone)");
-            Transform originalCamera = gameObject.transform.Find("Camera");
+            Transform duplicateCamera = transform.Find("Camera(Clone)");
+            Transform originalCamera = transform.Find("Camera");
             if (duplicateCamera == null || originalCamera == null) {
                 throw new Exception ("Couldn't find camera or duplicate camera of player!");
             }
             Destroy(duplicateCamera.gameObject);
             originalCamera.gameObject.SetActive(true);
-            gameObject.transform.GetComponent<Movements>().EnableMovements();
+            transform.GetComponent<Movements>().EnableMovements();
         };
     }
 }

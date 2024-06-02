@@ -31,20 +31,27 @@ public class AddCallback : MonoBehaviour
     private List<GameObject> gameObjects;
 
     public FinishCallback ReturnCallback() {
-        enabled = false;
         FinishCallback delegates = null;
+        if (gameObjects == null) {
+            gameObjects = new List<GameObject>();
+        }
         foreach (var script in scripts) {
-            Type derivedClass = script.GetType();
-            MethodInfo method = derivedClass.GetMethod("AddCallback");
-            if (method == null) {
-                throw new Exception(derivedClass.Name + " doesn't implement `AddCallback method!`");
+            if (script.enabled == true) {
+                Type derivedClass = script.GetType();
+                MethodInfo method = derivedClass.GetMethod("AddCallback");
+                if (method == null) {
+                    throw new Exception(derivedClass.Name + " doesn't implement `AddCallback method!`");
+                }
+                object[] args = new object[] {gameObjects.ToArray()};
+                FinishCallback result = method.Invoke(script, args) as FinishCallback;
+                if(result == null) {
+                    throw new Exception("Method invocation returned null!");
+                }
+                delegates += result;
             }
-            object[] args = new object[] {gameObjects.ToArray()};
-            FinishCallback result = method.Invoke(script, args) as FinishCallback;
-            if(result == null) {
-                throw new Exception("Method invocation returned null!");
-            }
-            delegates += result;
+        }
+        if (delegates == null) {
+            throw new Exception("Callback list of delegates returned null!");
         }
         return delegates;
     }

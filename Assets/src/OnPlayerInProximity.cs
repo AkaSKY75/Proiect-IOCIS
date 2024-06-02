@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,6 +9,8 @@ using UnityEngine.UI;
 
 public class OnPlayerInProximity : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject baseNextTarget;
 
     void OnTriggerStay(Collider collider)
     {
@@ -27,6 +31,14 @@ public class OnPlayerInProximity : MonoBehaviour
             
             OnCameraRetarget onCameraRetargetScript = transform.GetComponent<OnCameraRetarget>();
             onCameraRetargetScript.SetPlayerCam(duplicateCamera);
+            onCameraRetargetScript.SetNextTarget(playerTransform.gameObject);
+
+            OnCameraRetarget onCameraRetargetScriptPlayer = playerTransform.GetComponent<OnCameraRetarget>();
+            if (onCameraRetargetScriptPlayer == null) {
+                throw new Exception("`OnCameraRetarget` component was not found for " + transform.name);
+            }
+            onCameraRetargetScriptPlayer.SetNextTarget(baseNextTarget);
+
             onCameraRetargetScript.OnStartMoveCamera();
             enabled = false;
         }

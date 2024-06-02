@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -7,14 +8,18 @@ using UnityEngine;
 public class AnimationState : NetworkBehaviour
 {
 
+    [SerializeField]
     private NetworkAnimator animator;
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<NetworkAnimator>();
-        if (animator != null)
+        if (!IsOwner) {
+            return;
+        }
+        
+        if (animator == null)
         {
-            // Do something with the animator
+            throw new Exception(transform.name + " must have `NetworkAnimator` component!");
         }
     }
 
@@ -27,16 +32,33 @@ public class AnimationState : NetworkBehaviour
             return;
         }
 
-        if (animator != null)
-        {
-            bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
-            if (isMoving) {
-                animator.enabled = true;
-                animator.SetTrigger("isMoving");
-            } else {
-                animator.ResetTrigger("isMoving");
-                animator.enabled = false;
-            }
+        bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
+        if (isMoving) {
+            animator.enabled = true;
+            animator.SetTrigger("isMoving");
+        } else {
+            animator.ResetTrigger("isMoving");
+            animator.enabled = false;
         }
+    }
+
+    public void SetArmsUpAnimationState() {
+        if (!IsOwner)
+        {
+            return;
+        }
+        animator.enabled = true;
+        animator.ResetTrigger("isArmsDown");
+        animator.SetTrigger("isArmsUp");
+    }
+
+    public void ResetArmsUpAnimationState() {
+        if (!IsOwner)
+        {
+            return;
+        }
+        animator.enabled = true;
+        animator.ResetTrigger("isArmsUp");
+        animator.SetTrigger("isArmsDown");
     }
 }
