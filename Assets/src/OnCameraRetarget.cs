@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 public delegate void FinishCallback();
 
-public class OnCameraRetarget : MonoBehaviour
+public class OnCameraRetarget : NetworkBehaviour
 {
     public GameObject nextTarget;
     public int speed = 5;
@@ -28,6 +29,9 @@ public class OnCameraRetarget : MonoBehaviour
     private CameraMovingStates playerCameraState;
 
     public void OnStartMoveCamera() {
+        if (nextTarget == null) {
+            throw new Exception("nextTarget is null!");
+        }
         if (playerCam == null) {
             throw new Exception("playerCam is null!");
         }
@@ -41,19 +45,30 @@ public class OnCameraRetarget : MonoBehaviour
             if (onNextTargetCameraRetarget.nextTarget == nextTarget) {
                 Camera originalCamera = this.playerCam.transform.parent.Find("Camera").ConvertTo<Camera>();
                 GameObject player = originalCamera.transform.parent.gameObject;
-                onNextTargetCameraRetarget.nextTarget = player;
+                onNextTargetCameraRetarget.SetNextTarget(player);
                 onNextTargetCameraRetarget.SetNextTargetCam(originalCamera);
-                onNextTargetCameraRetarget.SetCallbacks(player);
             }
         }
     }
 
-    public void SetPlayerCam(Camera camera) {
-        this.playerCam = camera;
+    public void SetPlayerCam(Camera playerCam) {
+        this.playerCam = playerCam;
     }
 
-    public void SetNextTargetCam(Camera camera) {
-        this.nextTargetCam = camera;
+    public void SetNextTarget(GameObject nextTarget) {
+        if (nextTarget == null) {
+            throw new Exception("Cannot set `nextTarget` to null!");
+        }
+        this.nextTarget = nextTarget;
+        SetNextTargetCam(nextTarget.transform.Find("DisabledCamera").ConvertTo<Camera>());
+        SetCallbacks(nextTarget);
+    }
+
+    public void SetNextTargetCam(Camera nextTargetCam) {
+        if (nextTargetCam == null) {
+            throw new Exception("Cannot set `nextTargetCam` to null!");
+        }
+        this.nextTargetCam = nextTargetCam;
     }
 
     public void SetCallbacks(GameObject nextTarget) {
@@ -68,8 +83,10 @@ public class OnCameraRetarget : MonoBehaviour
 
     void Start() {
         playerCameraState = CameraMovingStates.NO;
-        nextTargetCam = nextTarget.transform.Find("Camera").ConvertTo<Camera>();
-        SetCallbacks(nextTarget);
+        if (nextTarget != null) {
+            nextTargetCam = nextTarget.transform.Find("DisabledCamera").ConvertTo<Camera>();
+            SetCallbacks(nextTarget);
+        }
     }
     void Update()
     {

@@ -85,12 +85,14 @@ public class DLLWrapper
 }
 
 public class OpenCV : DLLWrapper {
-    private delegate int DetectGestureD(IntPtr shouldRunImageProcPtr, IntPtr frameWasChangedPtr, IntPtr errorPath, IntPtr modelsPath, IntPtr pixels);
+    private delegate int DetectGestureD(IntPtr shouldRunImageProcPtr, 
+        IntPtr frameWasChangedPtr, IntPtr errorPath, IntPtr modelsPath, IntPtr pixels,
+        IntPtr detectedGesture, int cameraWidth, int cameraHeight);
     const string detectGestureFN = "DetectGesture";
     private readonly string opencvWrapperLibPath = Application.dataPath + "\\ThirdParty\\opencv";
     private readonly string openvinoWrapperLibPath = Application.dataPath + "\\ThirdParty\\openvino";
     private readonly string modelsPath = Application.dataPath + "/ThirdParty/openvino/models";
-    private readonly string errorLogPath = Application.dataPath;
+    private readonly string errorLogPath = Application.dataPath + "/error_log.txt";
     private static OpenCV singleton;
     public static OpenCV GetInstance()
     {
@@ -117,7 +119,8 @@ public class OpenCV : DLLWrapper {
         }
     }
 
-    public int DetectGesture(IntPtr shouldRunImageProcPtr, IntPtr frameWasChangedPtr, IntPtr pixels) {
+    public int DetectGesture(IntPtr shouldRunImageProcPtr, IntPtr frameWasChangedPtr, IntPtr pixels, IntPtr detectedGesture,
+        int cameraWidth, int cameraHeight) {
        if (hModule == IntPtr.Zero) {
             LoadLibraries();
             return -2;
@@ -127,8 +130,10 @@ public class OpenCV : DLLWrapper {
        char[] errorLogPathCharArray = errorLogPath.ToCharArray();
        char[] modelsPathCharArray = modelsPath.ToCharArray();
        unsafe {
-            fixed (byte* errorLogPathPtr = &Encoding.GetEncoding("UTF-8").GetBytes(errorLogPathCharArray)[0], modelsPathPtr = &Encoding.GetEncoding("UTF-8").GetBytes(modelsPathCharArray)[0]) {
-                ret = ((DetectGestureD)delegates[detectGestureFN].First)(shouldRunImageProcPtr, frameWasChangedPtr, (IntPtr)errorLogPathPtr, (IntPtr)modelsPathPtr, pixels);
+            fixed (byte* errorLogPathPtr = &Encoding.GetEncoding("UTF-8").GetBytes(errorLogPathCharArray)[0],
+                    modelsPathPtr = &Encoding.GetEncoding("UTF-8").GetBytes(modelsPathCharArray)[0]) {
+                ret = ((DetectGestureD)delegates[detectGestureFN].First)(shouldRunImageProcPtr, frameWasChangedPtr, (IntPtr)errorLogPathPtr,
+                        (IntPtr)modelsPathPtr, pixels, detectedGesture, cameraWidth, cameraHeight);
             }
        }
        return ret;

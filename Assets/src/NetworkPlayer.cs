@@ -22,6 +22,9 @@ public class NetworkPlayer : NetworkBehaviour
     {
         if (IsLocalPlayer)
         {
+            // should disable final callback, as other one must be called before
+            // will be reactivated in `OnWebCamera` callback
+            transform.GetComponent<RemoveDuplicateCamera>().enabled = false;
             playerCamera.SetActive(true);
         }
         else
